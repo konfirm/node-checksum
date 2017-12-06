@@ -1,0 +1,20 @@
+{
+  "name": "@konfirm/checksum",
+  "version": "0.0.0",
+  "description": "Calculate checksums on any kind of value, sorting keys for objects for consistency",
+  "main": "source/checksum.js",
+  "scripts": {
+    "test": "lab -vclr",
+    "test-coverage-html": "lab -clr html -o report.html"
+  },
+  "keywords": [
+    "checksum",
+    "hash"
+  ],
+  "author": "Rogier Spieker <rogier@konfirm.eu>",
+  "license": "MIT",
+  "devDependencies": {
+    "@konfirm/labrat": "^1.1.0",
+    "eslint-config-strict": "^14.0.1"
+  }
+}
