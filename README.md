@@ -1,4 +1,8 @@
 # Checksum
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a54c0610b8c04df2924a332c2f95c6de)](https://www.codacy.com/app/konfirm/node-checksum?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=konfirm/node-checksum&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/konfirm/node-checksum.svg?branch=master)](https://travis-ci.org/konfirm/node-checksum)
+
 Calculate checksums on any variable type, including objects.
 
 ## Installation
