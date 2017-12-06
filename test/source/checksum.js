@@ -91,7 +91,7 @@ describe('Checksum', () => {
 
 			describe('throws on invalid algorithm', () => {
 				it('create', (next) => {
-					expect(() => Checksum.create(compare.value, 'foo'))
+					expect(() => Checksum.hash(compare.value, 'foo'))
 						.to.throw(Error, 'Unknown algorithm: foo');
 
 					next();
@@ -109,8 +109,8 @@ describe('Checksum', () => {
 				algorithms.forEach((algorithm) => {
 					digest.forEach((dgst) => {
 						it(`create using algorithm "${ algorithm }", digest "${ dgst }"`, (next) => {
-							const one = Checksum.create(compare.value, algorithm, dgst);
-							const two = Checksum.create(compare.against, algorithm, dgst);
+							const one = Checksum.hash(compare.value, algorithm, dgst);
+							const two = Checksum.hash(compare.against, algorithm, dgst);
 
 							expect(one).to.equal(two);
 
@@ -135,7 +135,7 @@ describe('Checksum', () => {
 					});
 
 					it(`create using algorithm "${ algorithm }", digest "foo"`, (next) => {
-						expect(() => Checksum.create(compare.value, algorithm, 'foo'))
+						expect(() => Checksum.hash(compare.value, algorithm, 'foo'))
 							.to.throw(Error, 'Unknown digest method: foo');
 
 						next();

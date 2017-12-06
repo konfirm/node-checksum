@@ -18,7 +18,7 @@ class Checksum {
 	 *  @return    {string}  checksum
 	 *  @memberof  Checksum
 	 */
-	static create(value, algorithm = 'sha256', digest = 'hex') {
+	static hash(value, algorithm = 'sha256', digest = 'hex') {
 		this.verifyAlgorithmAndDigest(algorithm, digest);
 
 		return Updater.update(crypto.createHash(algorithm), value)
