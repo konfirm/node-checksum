@@ -47,6 +47,24 @@ class Updater {
 	}
 
 	/**
+	 *  Find all possible keys on an object which may contain state
+	 *
+	 *  @static
+	 *  @param     {Object}  object
+	 *  @returns
+	 *  @memberof  Updater
+	 */
+	static keys(object) {
+		const target = object.constructor.prototype;
+		const descriptors = Object.getOwnPropertyDescriptors(target);
+
+		return Object.keys(descriptors)
+			.filter((key) => key !== '__proto__' && typeof object[key] !== 'function')
+			.concat(Object.keys(object))
+			.filter((key, index, all) => all.indexOf(key) === index);
+	}
+
+	/**
 	 *  Update the hash using an object as input, as the ordering of keys does
 	 *  not matter to javascript but does for a checksum, the keys are sorted
 	 *  before the hash is updated
@@ -62,7 +80,7 @@ class Updater {
 			return this.string(hash, 'NULL');
 		}
 
-		return Object.keys(value)
+		return this.keys(value)
 			.sort((one, two) => -Number(one < two) || Number(one > two))
 			.reduce((sum, key) => this.update(this.update(sum, key), value[key]), hash);
 	}
