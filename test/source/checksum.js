@@ -30,7 +30,7 @@ describe('Checksum', () => {
 
 			expect(algorithms).to.be.array();
 			expect(algorithms.length).to.be.above(0);
-			expect(types).to.equal([ 'string' ]);
+			expect(types).to.equal(['string']);
 
 			next();
 		});
@@ -43,7 +43,7 @@ describe('Checksum', () => {
 
 			expect(digest).to.be.array();
 			expect(digest.length).to.be.above(0);
-			expect(types).to.equal([ 'string' ]);
+			expect(types).to.equal(['string']);
 
 			next();
 		});
@@ -73,35 +73,39 @@ describe('Checksum', () => {
 					Math.PI,
 					undefined,
 					null,
-					NaN,
-				],
+					NaN
+				]
 			},
 			{ value: { a: 1, b: 2 } },
-			{ value: { a: 1, b: 2, c: [ 1, 'a', true ] }, against: { b: 2, c: [ 1, 'a', true ], a: 1 } },
-
+			{
+				value: { a: 1, b: 2, c: [1, 'a', true] },
+				against: { b: 2, c: [1, 'a', true], a: 1 }
+			}
 		];
 
 		tests.forEach((compare) => {
-			const message = [ `Value ${ nameIt(compare.value) }` ];
+			const message = [`Value ${nameIt(compare.value)}`];
 
 			if ('against' in compare) {
 				message.push('against', nameIt(compare.against));
-			}
-			else {
+			} else {
 				compare.against = compare.value;
 			}
 
 			describe('throws on invalid algorithm', () => {
 				it('create', (next) => {
-					expect(() => Checksum.hash(compare.value, 'foo'))
-						.to.throw(Error, 'Unknown algorithm: foo');
+					expect(() => Checksum.hash(compare.value, 'foo')).to.throw(
+						Error,
+						'Unknown algorithm: foo'
+					);
 
 					next();
 				});
 
 				it('hmac', (next) => {
-					expect(() => Checksum.hmac(secret, compare.value, 'foo'))
-						.to.throw(Error, 'Unknown algorithm: foo');
+					expect(() =>
+						Checksum.hmac(secret, compare.value, 'foo')
+					).to.throw(Error, 'Unknown algorithm: foo');
 
 					next();
 				});
@@ -110,9 +114,17 @@ describe('Checksum', () => {
 			describe(message.join(' '), () => {
 				algorithms.forEach((algorithm) => {
 					digest.forEach((dgst) => {
-						it(`create using algorithm "${ algorithm }", digest "${ dgst }"`, (next) => {
-							const one = Checksum.hash(compare.value, algorithm, dgst);
-							const two = Checksum.hash(compare.against, algorithm, dgst);
+						it(`create using algorithm "${algorithm}", digest "${dgst}"`, (next) => {
+							const one = Checksum.hash(
+								compare.value,
+								algorithm,
+								dgst
+							);
+							const two = Checksum.hash(
+								compare.against,
+								algorithm,
+								dgst
+							);
 
 							expect(one).to.equal(two);
 
@@ -120,17 +132,38 @@ describe('Checksum', () => {
 						});
 
 						//  There appears to be an issue with shake128 and Hmac
-						if ((algorithm === 'shake128')) {
-							it('Shake128 throws an error (TODO)', (next) => {
-								expect(() => Checksum.hmac(secret, compare.value, algorithm, dgst)).to.throw(Error);
+						if (/^shake(128|256)$/.test(algorithm)) {
+							it('Shake128/256 throws an error (TODO)', (next) => {
+								expect(() =>
+									Checksum.hmac(
+										secret,
+										compare.value,
+										algorithm,
+										dgst
+									)
+								).to.throw(Error);
 								next();
 							});
-						}
-						else {
-							it(`hmac using algorithm "${ algorithm }", digest "${ dgst }"`, (next) => {
-								const one = Checksum.hmac(secret, compare.value, algorithm, dgst);
-								const two = Checksum.hmac(secret, compare.against, algorithm, dgst);
-								const not = Checksum.hmac(`${ secret }.`, compare.value, algorithm, dgst);
+						} else {
+							it(`hmac using algorithm "${algorithm}", digest "${dgst}"`, (next) => {
+								const one = Checksum.hmac(
+									secret,
+									compare.value,
+									algorithm,
+									dgst
+								);
+								const two = Checksum.hmac(
+									secret,
+									compare.against,
+									algorithm,
+									dgst
+								);
+								const not = Checksum.hmac(
+									`${secret}.`,
+									compare.value,
+									algorithm,
+									dgst
+								);
 
 								expect(one).to.equal(two);
 
@@ -145,16 +178,23 @@ describe('Checksum', () => {
 						}
 					});
 
-					it(`create using algorithm "${ algorithm }", digest "foo"`, (next) => {
-						expect(() => Checksum.hash(compare.value, algorithm, 'foo'))
-							.to.throw(Error, 'Unknown digest method: foo');
+					it(`create using algorithm "${algorithm}", digest "foo"`, (next) => {
+						expect(() =>
+							Checksum.hash(compare.value, algorithm, 'foo')
+						).to.throw(Error, 'Unknown digest method: foo');
 
 						next();
 					});
 
-					it(`hmac using algorithm "${ algorithm }", digest "foo"`, (next) => {
-						expect(() => Checksum.hmac(secret, compare.value, algorithm, 'foo'))
-							.to.throw(Error, 'Unknown digest method: foo');
+					it(`hmac using algorithm "${algorithm}", digest "foo"`, (next) => {
+						expect(() =>
+							Checksum.hmac(
+								secret,
+								compare.value,
+								algorithm,
+								'foo'
+							)
+						).to.throw(Error, 'Unknown digest method: foo');
 
 						next();
 					});
