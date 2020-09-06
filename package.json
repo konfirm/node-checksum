@@ -1,6 +1,6 @@
 {
   "name": "@konfirm/checksum",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Calculate checksums on any kind of value, sorting keys for objects for consistency",
   "main": "source/checksum.js",
   "scripts": {
