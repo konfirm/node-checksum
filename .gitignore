@@ -1,2 +1,5 @@
 node_modules
 report.html
+.nyc_output
+dist
+package-lock.json
