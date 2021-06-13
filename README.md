@@ -1,7 +1,6 @@
 # Checksum
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a54c0610b8c04df2924a332c2f95c6de)](https://www.codacy.com/app/konfirm/node-checksum?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=konfirm/node-checksum&amp;utm_campaign=Badge_Grade)
-[![Build Status](https://travis-ci.org/konfirm/node-checksum.svg?branch=master)](https://travis-ci.org/konfirm/node-checksum)
+[![Build Status](https://travis-ci.com/konfirm/node-checksum.svg?branch=master)](https://travis-ci.com/konfirm/node-checksum)
 
 Calculate checksums on any variable type, including objects.
 
@@ -12,78 +11,212 @@ Checksum is a scoped package, which means both the installation and `require` (o
 $ npm install --save @konfirm/checksum
 ```
 
+## Exports
+
+| name   | description                                       |
+| ------ | ------------------------------------------------- |
+| `hash` | Calculate the Hash (checksum) for the given value |
+| `hmac` | Calculate the HMAC (checksum) for the given value |
+
 
 ## Usage
 
-```
-//  require the Checksum library
-const Checksum = require('@konfirm/checksum');
+As of version 2.0 the Checksum package has support for TypeScript, JavaScript ES Modules (`import`) and JavaScript CommonJS (`require`).
+Prior versions only support CommonJS, as the package was build using it.
+
+
+### JavaScript (CommonJS)
+
+```js
+const { hash } = require('@konfirm/checksum');
 
 //  create an object
-const objectA = { greet: 'Hello World', count: Infinity, value: [ 'a', 'b' ] };
-//  create a similar object with a different order of keys
-const objectB = { value: [ 'a', 'b' ],  greet: 'Hello World', count: Infinity };
+const objectA = { greet: 'Hello World', count: Infinity, value: ['a', 'b'] };
+//  create a second object, using a different order of the same key/value pairs
+const objectB = { value: ['a', 'b'], greet: 'Hello World', count: Infinity };
 
-//  create the checksums (using the default algorithm and digest)
-const checksumA = Checksum.create(objectA);
-const checksumB = Checksum.create(objectB);
+//  create a hash (using the default algorithm and digest) of both objects
+const hashA = hash(objectA);
+const hashB = hash(objectB);
 
-console.log(checksumA);
-//  > '68607defdaf491bab7dbf54710c5cdfaeef11885a23c484fabc0bc7dda8f600f'
+console.log({
+	hashA, // 68607defdaf491bab7dbf54710c5cdfaeef11885a23c484fabc0bc7dda8f600f
+	hashB, // 68607defdaf491bab7dbf54710c5cdfaeef11885a23c484fabc0bc7dda8f600f
+	hashes_equal: hashA === hashB, // true
+	json_equal: JSON.stringify(objectA) === JSON.stringify(objectB), // false
+});
+```
 
-//  prove the checksums are equal
-console.log(checksumA === checksumB);
-//  > true
+#### Using the "default" import
+The demonstrated syntax in versions prior to 2.0 used the so called default import style, e.g.
 
-//  prove the objects are different when JSON-encoded
-console.log(JSON.stringify(objectA) === JSON.stringify(objectB));
-//  > false
+```js
+const Checksum = require('@konfirm/checksum');
+
+//  as in the code above, the `hash` function is now not available directly, but only via `Checksum`
+const hashA = Checksum.hash(objectA);
+```
+
+This still works, though do consider using the direct import/extraction style as that is the standard for ES Modules and Typescript.
+
+
+### JavaScript (ES Modules)
+```js
+import { hash } from '@konfirm/checksum';
+
+//  create an object
+const objectA = { greet: 'Hello World', count: Infinity, value: ['a', 'b'] };
+//  create a second object, using a different order of the same key/value pairs
+const objectB = { value: ['a', 'b'], greet: 'Hello World', count: Infinity };
+
+//  create a hash (using the default algorithm and digest) of both objects
+const hashA = hash(objectA);
+const hashB = hash(objectB);
+
+console.log({
+	hashA, // 68607defdaf491bab7dbf54710c5cdfaeef11885a23c484fabc0bc7dda8f600f
+	hashB, // 68607defdaf491bab7dbf54710c5cdfaeef11885a23c484fabc0bc7dda8f600f
+	hashes_equal: hashA === hashB, // true
+	json_equal: JSON.stringify(objectA) === JSON.stringify(objectB), // false
+});
+```
+
+#### Mimicing the "default" import
+
+Whilst not advocating this style, it may be beneficial to at least be aware of it. If for some reason the "default" is needed, Typescript allows for this syntax
+
+```js
+import * as Checksum from '@konfirm/checksum';
+
+//  as in the code above, the `hash` function is now not available directly, but only via `Checksum`
+const hashA = Checksum.hash(objectA);
+```
+
+
+### TypeScript
+```ts
+import { hash } from '@konfirm/checksum';
+
+//  create an object
+const objectA: object = { greet: 'Hello World', count: Infinity, value: ['a', 'b'] };
+//  create a second object, using a different order of the same key/value pairs
+const objectB: object = { value: ['a', 'b'], greet: 'Hello World', count: Infinity };
+
+//  create a hash (using the default algorithm and digest) of both objects
+const hashA: string = hash(objectA);
+const hashB: string = hash(objectB);
+
+console.log({
+	hashA, // 68607defdaf491bab7dbf54710c5cdfaeef11885a23c484fabc0bc7dda8f600f
+	hashB, // 68607defdaf491bab7dbf54710c5cdfaeef11885a23c484fabc0bc7dda8f600f
+	hashes_equal: hashA === hashB, // true
+	json_equal: JSON.stringify(objectA) === JSON.stringify(objectB), // false
+});
+```
+
+#### Mimicing the "default" import
+
+Whilst not advocating this style, it may be beneficial to at least be aware of it. If for some reason the "default" is needed, Typescript allows for this syntax
+
+```ts
+import * as Checksum from '@konfirm/checksum';
+
+//  as in the code above, the `hash` function is now not available directly, but only via `Checksum`
+const hashA: string = Checksum.hash(objectA);
 ```
 
 
 ## API
-Checksum is fully static, it provides two methods for creating a checksum.
 
-### hash
+### `hash(value: any, algorithm: string = 'sha256', digest: string = 'hex'): string`
 Calculates the checksum using a Hash object with the optional algorith (default `'sha256'`) and return the created hash as a string using the optional digest method (default `'hex'`)
 
-Syntax: `<string> Checksum.create(<any value> [, <string algorithm='sha256'> [, <string digest='hex'>]])`
+#### TypeScript
 
-Example:
-```
-const Checksum = require('@konfirm/checksum');
-const output = Checksum.hash('my secret', 'the quick brown fox jumps over the lazy dog');
+```ts
+import { hash } from '@konfirm/checksum';
+const output: string = hash('the quick brown fox jumps over the lazy dog');
 
-console.log(output);
-//  > '05c6e08f1d9fdafa03147fcb8f82f124c76d2f70e3d989dc8aadb5e7d7450bec'
+console.log(output); // 05c6e08f1d9fdafa03147fcb8f82f124c76d2f70e3d989dc8aadb5e7d7450bec
 ```
 
+#### JavaScript (ES Modules)
 
-### hmac
+```js
+import { hash } from '@konfirm/checksum';
+const output = hash('the quick brown fox jumps over the lazy dog');
+
+console.log(output); // 05c6e08f1d9fdafa03147fcb8f82f124c76d2f70e3d989dc8aadb5e7d7450bec
+```
+
+
+#### JavaScript (CommonJS)
+
+```js
+const { hash } = require('@konfirm/checksum');
+const output = hash('the quick brown fox jumps over the lazy dog');
+
+console.log(output); // 05c6e08f1d9fdafa03147fcb8f82f124c76d2f70e3d989dc8aadb5e7d7450bec
+```
+
+
+### `hmac(secret: string, value: any, algorithm: string = 'sha256', digest: string = 'hex'): string`
 Calculates the checksum using an HMAC object using the provided secret with the optional algorith (default `'sha256'`) and return the created hash as a string using the optional digest method (default `'hex'`). Albeit the use is different, it can be used as a salted checksum.
 
-Syntax: `<string> Checksum.hmac(<string secret>, <any value> [, <string algorithm='sha256'> [, <string digest='hex'>]])`
 
-Example:
+#### TypeScript
+
+```ts
+import { hmac } from '@konfirm/checksum';
+const output: string = hmac('my secret', 'the quick brown fox jumps over the lazy dog');
+
+console.log(output); // 216262dbc93d393b146b181b966df3525d979499d05f99a00a185edfe425df6e
 ```
-const Checksum = require('@konfirm/checksum');
-const output = Checksum.hmac('my secret', 'the quick brown fox jumps over the lazy dog');
 
-console.log(output);
-//  > '216262dbc93d393b146b181b966df3525d979499d05f99a00a185edfe425df6e'
+#### JavaScript (ES Modules)
+
+```js
+import { hmac } from '@konfirm/checksum';
+const output = hmac('my secret', 'the quick brown fox jumps over the lazy dog');
+
+console.log(output); // 216262dbc93d393b146b181b966df3525d979499d05f99a00a185edfe425df6e
 ```
 
-### constants
-There are two constants available to obtain all available algorithms and digest methods.
 
- constant         | type  | provides
-------------------|-------|---------
- `ALGORITMS`      | array | All available algorithms (same as `require('crypto').getHashes()`)
- `DIGEST_METHODS` | array | All available digest methods (`hex`, `latin1`, `base64`)
+#### JavaScript (CommonJS)
+
+```js
+const { hmac } = require('@konfirm/checksum');
+const output = hmac('my secret', 'the quick brown fox jumps over the lazy dog');
+
+console.log(output); // 216262dbc93d393b146b181b966df3525d979499d05f99a00a185edfe425df6e
+```
+
+
+## Migrating from version 1.0 to 2.0
+
+### Removed features
+
+Several previously public available members have be removed from the package
+
+ - `verifyAlgorithmAndDigest` method, this has been removed as its internal mechanics have been improved to safe-guard the values given
+ - `ALGORITHMS` property, this has always been the `crypto.getHashes()` output, if the list is needed, please update to use the `getHashes` method instead.
+ - `DIGEST_METHODS`, this used to provide an array with the values `'hex'`', `'base64'` and `'latin1'`
+
+The digest method `'latin1'` has been removed from the supported options, leaving only `'hex'` and `'base64'`
+
+As the Checksum package did not have TypeScript or ES Module support before, users of those may be able to remove any workaround needed (not aware of any), and TypeScript users now have better type hinting (even though the package is mainly strings on the outside).
+
+For the CommonJS users importing the entiry library (`const Checksum = require('@konfirm/checksum');`), that syntax still woks, though we (now) recommend to pick only what is needed.
+
+```js
+const { hmac } = require('@konfirm/checksum');
+```
+
 
 ## License
 
-MIT License Copyright (c) 2017 Rogier Spieker (Konfirm)
+MIT License Copyright (c) 2017-2021 Rogier Spieker (Konfirm)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
