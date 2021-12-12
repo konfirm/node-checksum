@@ -8,16 +8,16 @@ type Updater = (h: Updatable, value: any) => Updatable;
 type TypeUpdate = { [key: string]: Updater };
 
 /**
- * Create a type guard based on a list of valid values
+ * Create a type check based on a list of valid values
  *
  * @template T
  * @param {unknown} name
  * @param {() => Array<unknown>} valid
  * @returns {(value: unknown) => T}
  */
-function guard<T extends string>(name: unknown, valid: () => Array<unknown>): (value: unknown) => T {
+function check<T extends string>(name: unknown, ...values: Array<unknown>): (value: unknown) => T {
 	return (value: unknown) => {
-		if (valid().includes(value)) {
+		if (values.includes(value)) {
 			return value as T;
 		}
 
@@ -25,10 +25,10 @@ function guard<T extends string>(name: unknown, valid: () => Array<unknown>): (v
 	};
 }
 
-// Algorithm type guard
-const asAlgorithm = guard<Algorithm>('algorithm', getHashes);
-// Digest type guard
-const asDigest = guard<Digest>('digest', () => ['hex', 'base64']);
+// Algorithm type check
+const asAlgorithm = check<Algorithm>('algorithm', ...getHashes());
+// Digest type check
+const asDigest = check<Digest>('digest', 'hex', 'base64');
 // Type specific Hash/Hmac updaters
 const types: TypeUpdate = {
 	array: (h: Updatable, values: Array<unknown>) => update(h, ...values),
