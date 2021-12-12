@@ -1,6 +1,6 @@
 {
   "name": "@konfirm/checksum",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Calculate checksums on any kind of value, sorting keys for objects for consistency",
   "main": "dist/cjs/main.js",
   "module": "dist/esm/main.mjs",
