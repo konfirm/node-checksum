@@ -1,6 +1,7 @@
-# Checksum
+![tests](https://github.com/konfirm/node-checksum/actions/workflows/tests.yml/badge.svg)
+![release](https://github.com/konfirm/node-checksum/actions/workflows/release.yml/badge.svg)
 
-[![Build Status](https://travis-ci.com/konfirm/node-checksum.svg?branch=master)](https://travis-ci.com/konfirm/node-checksum)
+# Checksum
 
 Calculate checksums on any variable type, including objects.
 
