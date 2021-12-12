@@ -8,11 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Added
 ### Changed
+### Removed
+
+## [2.0.1] - 2021-12-12
+
+### Changed
 - replaced tap-spec with tap-arc
 - changed CI/CD from travis to github actions
 - getHashes is now only called once instead of on every check (resolves potential memory leak)
 
-### Removed
 
 ## [2.0.0] - 2021-06-13
 
@@ -106,7 +110,8 @@ Maintenance release
 Initial release.
 
 
-[Unreleased]: https://github.com/konfirm/node-checksum/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/konfirm/node-checksum/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/konfirm/node-checksum/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/konfirm/node-checksum/compare/v1.0.8...v2.0.0
 [1.0.8]: https://github.com/konfirm/node-checksum/compare/v1.0.7...v1.0.8
 [1.0.7]: https://github.com/konfirm/node-checksum/compare/v1.0.6...v1.0.7
