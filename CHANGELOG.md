@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Added
 ### Changed
+- replaced tap-spec with tap-arc
+- changed CI/CD from travis to github actions
+- getHashes is now only called once instead of on every check (resolves potential memory leak)
+
 ### Removed
 
 ## [2.0.0] - 2021-06-13
