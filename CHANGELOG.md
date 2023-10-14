@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Removed
 
+## [2.0.2] - 2023-10-14
+
+### Fixed
+- updated dependencies
+- ensure the changes in supported algorithms for the Node.js versions are correctly tested
+
 ## [2.0.1] - 2021-12-12
 
 ### Changed

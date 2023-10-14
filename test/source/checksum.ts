@@ -69,7 +69,7 @@ test('Checksum/hmac - algorithms', (t) => {
 			t.false(main.hmac('super secret', 'a simple string', algorithm).length > 0, `${algorithm} works`);
 		}
 		catch (error) {
-			t.equal(String(error), 'Error: error:00000000:lib(0):func(0):reason(0)', `algorithm ${algorithm} throws ${error}`)
+			t.match(String(error), /error:00000000:lib\(0\):(?:func\(0\))?:reason\(0\)/, `algorithm ${algorithm} throws ${error}`)
 		}
 	});
 
