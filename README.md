@@ -6,6 +6,7 @@
 Calculate checksums on any variable type, including objects.
 
 ## Installation
+
 Checksum is a scoped package, which means both the installation and `require` (or `import`) need the scope along with the package name:
 
 ```
@@ -23,7 +24,7 @@ $ npm install --save @konfirm/checksum
 ## Usage
 
 As of version 2.0 the Checksum package has support for TypeScript, JavaScript ES Modules (`import`) and JavaScript CommonJS (`require`).
-Prior versions only support CommonJS, as the package was build using it.
+Prior versions only support CommonJS, as the package was built using it.
 
 
 ### JavaScript (CommonJS)
@@ -49,7 +50,7 @@ console.log({
 ```
 
 #### Using the "default" import
-The demonstrated syntax in versions prior to 2.0 used the so called default import style, e.g.
+The demonstrated syntax in versions prior to 2.0 used the so-called default import style, e.g.
 
 ```js
 const Checksum = require('@konfirm/checksum');
@@ -58,7 +59,7 @@ const Checksum = require('@konfirm/checksum');
 const hashA = Checksum.hash(objectA);
 ```
 
-This still works, though do consider using the direct import/extraction style as that is the standard for ES Modules and Typescript.
+This still works, though do consider using the direct import/extraction style, as that is the standard for ES Modules and Typescript.
 
 
 ### JavaScript (ES Modules)
@@ -82,9 +83,9 @@ console.log({
 });
 ```
 
-#### Mimicing the "default" import
+#### Mimicking the "default" import
 
-Whilst not advocating this style, it may be beneficial to at least be aware of it. If for some reason the "default" is needed, Typescript allows for this syntax
+We are not advocating this style, though it may be beneficial to at least be aware of it. If, for some reason, the "default" is needed, JavaScript allows for this syntax.
 
 ```js
 import * as Checksum from '@konfirm/checksum';
@@ -115,9 +116,9 @@ console.log({
 });
 ```
 
-#### Mimicing the "default" import
+#### Mimicking the "default" import
 
-Whilst not advocating this style, it may be beneficial to at least be aware of it. If for some reason the "default" is needed, Typescript allows for this syntax
+We are not advocating this style, though it may be beneficial to at least be aware of it. If, for some reason, the "default" is needed, TypeScript allows for this syntax.
 
 ```ts
 import * as Checksum from '@konfirm/checksum';
@@ -130,7 +131,7 @@ const hashA: string = Checksum.hash(objectA);
 ## API
 
 ### `hash(value: any, algorithm: string = 'sha256', digest: string = 'hex'): string`
-Calculates the checksum using a Hash object with the optional algorith (default `'sha256'`) and return the created hash as a string using the optional digest method (default `'hex'`)
+Calculates the checksum using a Hash object with the optional algorithm (default `'sha256'`) and returns the created hash as a string using the optional digest method (default `'hex'`)
 
 #### TypeScript
 
@@ -162,7 +163,7 @@ console.log(output); // 05c6e08f1d9fdafa03147fcb8f82f124c76d2f70e3d989dc8aadb5e7
 
 
 ### `hmac(secret: string, value: any, algorithm: string = 'sha256', digest: string = 'hex'): string`
-Calculates the checksum using an HMAC object using the provided secret with the optional algorith (default `'sha256'`) and return the created hash as a string using the optional digest method (default `'hex'`). Albeit the use is different, it can be used as a salted checksum.
+Calculates the checksum using an HMAC object using the provided secret with the optional algorithm (default `'sha256'`) and returns the created hash as a string using the optional digest method (default `'hex'`). Although the use is different, it can be used as a salted checksum.
 
 
 #### TypeScript
@@ -198,17 +199,17 @@ console.log(output); // 216262dbc93d393b146b181b966df3525d979499d05f99a00a185edf
 
 ### Removed features
 
-Several previously public available members have be removed from the package
+Several previously public available members have been removed from the package
 
- - `verifyAlgorithmAndDigest` method, this has been removed as its internal mechanics have been improved to safe-guard the values given
- - `ALGORITHMS` property, this has always been the `crypto.getHashes()` output, if the list is needed, please update to use the `getHashes` method instead.
+ - `verifyAlgorithmAndDigest` method, this has been removed as its internal mechanics have been improved to safeguard the values given
+ - `ALGORITHMS` property, this has always been the `crypto.getHashes()` output; if the list is needed, please update to use the `getHashes` method instead.
  - `DIGEST_METHODS`, this used to provide an array with the values `'hex'`', `'base64'` and `'latin1'`
 
 The digest method `'latin1'` has been removed from the supported options, leaving only `'hex'` and `'base64'`
 
 As the Checksum package did not have TypeScript or ES Module support before, users of those may be able to remove any workaround needed (not aware of any), and TypeScript users now have better type hinting (even though the package is mainly strings on the outside).
 
-For the CommonJS users importing the entiry library (`const Checksum = require('@konfirm/checksum');`), that syntax still woks, though we (now) recommend to pick only what is needed.
+For the CommonJS users importing the entire library (`const Checksum = require('@konfirm/checksum');`), that syntax still works, though we (now) recommend picking only what is needed.
 
 ```js
 const { hmac } = require('@konfirm/checksum');
